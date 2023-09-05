@@ -1,0 +1,152 @@
+<!-- patient.html-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WikiCare Patients</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <style>
+        body {
+          background-color: #F6F6F2;
+        }
+        
+        .page {
+          padding-left: 270px;
+          padding-top: 200px;
+          color: #388087;
+        }
+        
+        .w3-bar {
+          background-color: #388087;
+        }
+        
+        .w3-bar-item {
+          color: white;
+        }
+        
+        p {
+          width: 50%;
+          background-color: #E2E2E2;
+          padding: 5px;
+          box-sizing: border-box;
+          text-align: left;
+          margin: 0;
+        }
+        
+        .patient-box {
+          padding-top: 70px;
+          margin-bottom: 30px;
+        }
+        
+        .patient-box h2 {
+          color: #E2E2E2;
+          font-size: 18px;
+          font-color: black;
+          margin-top: 0;
+        }
+        
+        .patient-box p {
+          margin: 0;
+        }
+        
+        .container {
+            text-decoration: none; /* Remove underlining */
+            display: flex;
+            
+            align-items: center;
+            text-align: center;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            color: white;
+          
+        }
+        
+        .button {
+          display: inline-block;
+          padding: 8px 16px;
+          background-color: #388087;
+          color: white;
+          text-decoration: none;
+          border-radius: 4px;
+          font-size: 16px;
+          cursor: pointer;
+          margin-left: 10px;
+          height: 40px;
+          border: none;
+        }
+        
+        
+        .button-group {
+            padding-left: 250px;
+            display: flex;
+            
+        }
+        .button-group a {
+            text-decoration: none; /* Remove underlining */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .rounded-square {
+          display: inline-block;
+          margin: 20px 0px; /* Adjust the margin as per your preference */
+          height: 80px;
+          width: 180px;
+          border-radius: 15px;
+          border: none;
+          background-color: #6FB3B8;
+          margin-left: 60px;
+        }
+        .black-text {
+            color: black;
+        }
+        
+    </style>
+</head>
+<body>
+
+<!-- Start Content -->
+
+<!-- Navigation (Stays on Top) -->
+<div id= "navigation" class="w3-top w3-bar w3-left" >
+    <a href="{% url 'index' %}" class="w3-bar-item w3-button"> Home</a>
+    <a href="{% url 'index_patient' %}" class="w3-bar-item w3-button">Página Pacientes</a>
+    <a href="{% url 'sys_guide' %}" class="w3-bar-item w3-button">Guideline para gestão de sintomas</a>
+</div>
+
+<div id="page" class="w3-container w3-padding-32 page" style="margin-top: 50px;">
+    <h1 class="w3-left" style="font-size: x-large;">Área Pessoal: <span class="black-text">{{patient.name}}</span></h1>
+    <div id="results">
+        <div class="patient-box" style="color: black; margin-top: 30px; margin-left: 30px">
+            <p><strong>Nome Completo:</strong> {{ patient.name}}</p>
+            <p><strong>Número de Utente:</strong> {{ patient.patientID}}</p>
+            <p><strong>Data de Nascimento:</strong> {{ patient.birthday}}</p>
+            <p><strong>Idade:</strong> {{ patient.age}}</p>
+            <p><strong>Contacto:</strong> {{ patient.contact}}</p>
+            <p><strong>Diagnóstico:</strong> {{ patient.diagnosis}}</p>
+        </div>
+        
+        <div class="container" style="margin-top: 30px;">
+            <a href="{% url 'symptom_rating' step=0 %}" class="button rounded-square">Novo registo de sintomas</a>
+            <a href="{% url 'patient_history' %} " class="button rounded-square">Consultar e/ou avaliar registos anteriores</a>
+
+            
+            <button class="button" onclick="goBack()" style="margin-left: 55px;">Página Anterior</button>
+
+            <script>
+              function goBack() {
+                window.history.back();
+              }
+            </script>
+        </div>
+    </div>
+</div>
+
+<!-- End Content -->
+</body>
+</html>

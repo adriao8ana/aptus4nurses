@@ -1,0 +1,170 @@
+<!-- preview_rating.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WikiCare Patients</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <style>
+        body {
+            background-color: #F6F6F2;
+        }
+        .w3-bar {
+            background-color: #388087;
+        }
+        .w3-bar-item {
+            color: white;
+        }
+        .page {
+            padding-left: 270px;
+            padding-top: 200px;
+            color: #388087
+            
+        }
+        p {
+            width: 50%;
+            background-color: #E2E2E2;
+            padding: 5px;
+            box-sizing: border-box;
+            border: 1px solid black;
+            text-align: left;
+            margin: 0;
+        }
+        .button {
+           text-align: center;
+           display: flex;
+           flex-wrap: wrap;
+           justify-content: center;
+           align-items: center;
+           height: 80px;
+           width: 120px;
+           background-color: #6FB3B8;
+           color: white;
+           border: none;
+           border-radius: 15px;
+           margin: 60px;
+       }
+       .content{
+           padding-left: 150px;
+        }
+       th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            color: black; /* Set the text color to black */
+       }
+       
+       th {
+            background-color: #C2EDCE;
+       }
+       .black-text {
+           color: black;
+       }
+       .highlight {
+            background-color: #BADFE7; /* Add your desired background color here */
+        }
+        .orange {
+            background-color: #FF9D5C;
+        }
+        
+        .red {
+            background-color: #FF6961;
+        }
+        .yellow {
+            background-color: #FFFFBF;
+        }
+        .header-row {
+            background-color: #6FB3B8;
+            background-color: grey !important;
+        }
+       .button.rounded-square {
+           margin-right: 150px; /* Add margin-right to create space between buttons */
+       }
+       .header-text {
+            color: black;
+        }
+        
+    </style>
+</head>
+<body>
+
+<!-- Start Content -->
+
+<!-- Navigation (Stays on Top) -->
+<div class="w3-top w3-bar w3-left" >
+    <a href="{% url 'index' %}" class="w3-bar-item w3-button">Home</a>
+    <a href="{% url 'index_patient' %}" class="w3-bar-item w3-button">Página Pacientes</a>
+    <a href="{% url 'sys_guide' %}" class="w3-bar-item w3-button">Guideline para gestão de sintomas</a>
+</div>
+
+<!-- About -->
+<div id="page" class="w3-container w3-padding-32 page" style="margin-top: 30px;">
+    <h1 class="w3-left" style="font-size: x-large;">Área Pessoal: <span class="black-text">{{patient_name}}</span></h1>
+</div>
+
+<h2 style="font-size: 25px; margin-left: 270px; margin-top: -10px; color: black;"> Conclusão de registo de sintomas</h2>
+<p class="small-text" style="margin-left: 270px; border: none; background-color: transparent;">
+    Por favor verifique que estes são os sintomas que quer registar. 
+    Para editar basta carregar no botão 'Editar' ao lado do respectivo sintoma.
+</p>
+
+
+<div id="content" class="w3-container w3-padding-32 page">
+    {% if confirm_save %}
+        <table>
+            <thead>
+                <tr>
+                    <th style="background-color: #6FB3B8;">Sintoma</th>
+                    <th style="background-color: #6FB3B8;">Validação</th>
+                    <th style="background-color: #6FB3B8;">Frequência</th>
+                    <th style="background-color: #6FB3B8;">Severidade</th>
+                    <th style="background-color: #6FB3B8;">Incómodo</th>
+                    <th style="background-color: #6FB3B8;">Editar episódio?</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for instance in msas_instance_list %}
+                    <tr {% if instance.validation %} class="highlight" {% endif %}>
+                        <td style="text-align: center;"><strong>{{ instance.symptom.name }}</strong></td>
+                        <td style="text-align: center;">
+                            {% if instance.validation %}
+                                Sim
+                            {% else %}
+                                Não
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center;" class="{% if instance.frequency == 3 %}orange{% elif instance.frequency == 4 %}red{% elif instance.frequency == 2 %}yellow{% endif %}">
+                            {{ instance.frequency }}
+                        </td>
+                        <td style="text-align: center;" class="{% if instance.severity == 3 %}orange{% elif instance.severity == 4 %}red{% elif instance.severity == 2 %}yellow{% endif %}">
+                            {{ instance.severity }}
+                        </td>
+                        <td style="text-align: center;" class="{% if instance.discomfort == 3 %}orange{% elif instance.discomfort == 4 %}red{% elif instance.discomfort == 2 %}yellow{% endif %}">
+                            {{ instance.discomfort }}
+                        </td>
+                        <td>
+                            <form method="post" action="{% url 'edit_rating' symptom_id=instance.symptom %}">
+                                {% csrf_token %}
+                                
+                                <button  type="submit">Edit</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+
+        </table>
+        
+        <form method="post" action="{% url 'save_rating_success' %}">
+            {% csrf_token %}
+            <button class="button rounded-square" style= "margin-left: 500px" type="submit">Guardar registo</button>
+        </form>
+    {% endif %}
+</div>
+<!-- End Content -->
+</body>
+</html>

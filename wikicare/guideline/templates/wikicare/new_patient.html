@@ -1,0 +1,202 @@
+<!-- new_patient.html-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WikiCare Patients</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <style>
+        body {
+            background-color: #F6F6F2;
+        }
+        .w3-bar {
+            background-color: #388087;
+        }
+        .w3-bar-item {
+            color: white;
+        }
+        .page {
+            padding-left: 270px;
+            padding-top: 200px;
+            color: #388087
+        }
+        .searchbox {
+            padding-left: 50px;
+            color: #388087
+        }
+        .search{
+            justify-content: left;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 200px;
+            width: 400px;
+            background-color: #E2E2E2;
+            color: black;
+            border: 1px solid black;
+            border-radius: 15px;
+            margin: 60px;
+        }
+        p {
+            width: 50%;
+            background-color: #E2E2E2;
+            padding: 5px;
+            box-sizing: border-box;
+            border: 1px solid black;
+            text-align: left;
+            margin: 0;
+        }
+        p.form-description {
+            background-color: transparent;
+            margin-left: 270px;
+            border: none;
+            border-radius: 0;
+        }
+         .button {
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            height: 80px;
+            width: 120px;
+            background-color: #6FB3B8;
+            color: black;
+            border: none;
+            border-radius: 15px;
+            margin: 60px;
+        }
+        form label {
+            margin-bottom: 10px; /* Add margin-bottom to create space between labels and inputs */
+        }
+        form input[type="text"],
+        form input[type="number"],
+        form input[type="date"] {
+            margin-bottom: 10px; /* Add margin-bottom to create space between inputs */
+            width: 500px; /* Adjust the width as needed */
+            height: 30px; /* Adjust the height as needed */
+            padding: 5px; /* Add padding to adjust the content spacing within the inputs */
+            font-size: 16px; /* Adjust the font size as needed */
+        }
+        form select {
+            height: 30px;
+            width: 500px; /* Adjust the width as needed */
+            padding: 5px;
+            font-size: 16px;
+        }
+         .button {
+           display: inline-block;
+           padding-left: 270px;
+           padding: 8px 16px;
+           background-color: #388087;
+           color: white;
+           text-decoration: none;
+           border-radius: 4px;
+           font-size: 16px;
+           cursor: pointer;
+           margin-left: 10px;
+           width: 120px;
+           height: 70px;
+           border: none;
+         }
+        .button.rounded-square {
+           
+            margin-right: 10px; /* Add margin-right to create space between buttons */
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            margin-left: 270px;
+        }
+        .button-container button {
+            margin-left: 20px;
+            vertical-align: middle;
+        }
+        .button-container button.save-button {
+            background-color: #6FB3B8;
+        }
+        
+    </style>
+</head>
+<body>
+
+<!-- Start Content -->
+
+<!-- Navigation (Stays on Top) -->
+<div id= "navigation" class="w3-top w3-bar w3-left" >
+    <a href="{% url 'index' %}" class="w3-bar-item w3-button"> Home</a>
+    <a href="{% url 'index_patient' %}" class="w3-bar-item w3-button">Página Pacientes</a>
+    <a href="{% url 'sys_guide' %}" class="w3-bar-item w3-button">Guideline para gestão de sintomas</a>
+</div>
+
+<!-- About -->
+<div id="page" class="w3-container w3-padding-32 page" style="margin-top: 50px;">
+    <h1 class="w3-left" style="font-size: x-large;">Registar Novo Paciente</h1>
+</div>
+  
+<div>
+    {% block content %}
+      <p class="form-description">Preencha o form abaixo com as informações do paciente:</p>
+      <div class="button-container">
+          <form method="post">
+            {% csrf_token %}
+            <label for="name">Nome:</label>
+            <input type="text" name="name" id="name">
+            <br>
+            <label for="patientID">Número de Utente:</label>
+            <input type="text" name="patientID" id="patientID">
+            <br>
+            <label for="age">Idade:</label>
+            <input type="number" name="age" id="age"> 
+            <br>
+            <label for="birthday">Data de Nascimento:</label>
+            <input type="date" name="birthday" id="birthday">
+            <br>
+            <label for="contact">Contacto:</label>
+            <input type="text" name="contact" id="contact">
+            <br>
+            <label for="{{ form.diagnosis.id_for_label }}">Diagnóstico:</label>
+            {{ form.diagnosis }}
+            <br>
+            <button class="button rounded-square save-button" type="submit">Guardar</button>
+            
+            <!-- Go back button -->
+            <button class="button rounded-square" onclick="goBack()">Página anterior</button>
+          </form>
+          
+        </div>
+    {% endblock %}
+</div>
+
+{% if form.errors %}
+  <ul>
+    {% for field in form %}
+      {% if field.errors %}
+        <li>{{ field.label }}:
+          <ul>
+            {% for error in field.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endif %}
+
+
+
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
+
+<!-- End Content -->
+</body>
+</html>

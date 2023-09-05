@@ -1,0 +1,152 @@
+<!-- suitability.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WikiCare Patients</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <style>
+        body {
+            background-color: #F6F6F2;
+        }
+        .w3-bar {
+            background-color: #388087;
+        }
+        .w3-bar-item {
+            color: white;
+        }
+        .page {
+            padding-left: 270px;
+            padding-top: 200px;
+            padding-bottom: 10px; /* Adjust the bottom padding as needed */
+            margin-bottom: -100px; /* Adjust the negative margin as needed */
+            color: #388087;
+        }
+        .searchbox {
+            padding-left: 50px;
+            color: #388087;
+        }
+        .search {
+            justify-content: left;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 200px;
+            width: 400px;
+            background-color: #E2E2E2;
+            color: black;
+            border: 1px solid black;
+            border-radius: 15px;
+            margin: 60px;
+        }
+        p {
+            width: 75%;
+            padding: 5px;
+            box-sizing: border-box;
+            text-align: left;
+            margin: 0;
+        }
+        .button {
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            height: 80px;
+            width: 120px;
+            background-color: #6FB3B8;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            margin: 60px;
+        }
+        .success-message {
+            float: right;
+            width: 400px;
+            padding: 20px;
+            background-color: #E2E2E2;
+            border: 1px solid black;
+            border-radius: 15px;
+            margin-top: 60px;
+        }
+        .black-text {
+            color: black;
+        }
+        .radio-group {
+            margin-top: 10px;
+        }
+    
+        .radio-group label {
+            margin-right: 15px; /* Adjust this value for the desired spacing */
+        }
+    </style>
+</head>
+<body>
+<!-- Start Content -->
+<!-- Navigation (Stays on Top) -->
+<div id= "navigation" class="w3-top w3-bar w3-left" >
+    <a href="{% url 'index' %}" class="w3-bar-item w3-button"> Home</a>
+    <a href="{% url 'index_patient' %}" class="w3-bar-item w3-button">Página Pacientes</a>
+    <a href="{% url 'sys_guide' %}" class="w3-bar-item w3-button">Guideline para gestão de sintomas</a>
+</div>
+
+<!-- About -->
+<div id="page" class="w3-container w3-padding-32 page" style="margin-top: 40px;">
+    <h1 class="w3-left" style="font-size: x-large;">Área Pessoal: <span class="black-text">{{patient.name}}</span></h1>
+</div>
+
+<div id="page" class="w3-container w3-padding-32 page" style="margin-top: 40px;">
+    <h2 class="w3-left" style="font-size: x-large;"><span class="black-text">Avaliar adequabilidade da intervenção</span></h2>
+    <br>
+    <br>
+    <br>
+    <p class="black-text" >De forma a compreender melhor a perspetiva do paciente sobre a recomendação que lhe foi feita, peça ao paciente para avaliar as seguintes frases:</p>
+</div>
+
+<form method="POST" action="{% url 'treatment_suitability' %}" style="margin-left: 270px; margin-top: 100px">
+    {% csrf_token %}
+
+    <label for="id_rating_1">1 - As intervenções selecionadas parecem ser <strong>adequadas</strong>:</label>
+    <div class="radio-group" style="margin-left: 50px">
+
+        {% for choice in form.rating_1.field.choices %}
+        <input type="radio" id="id_rating_1_{{ forloop.counter0 }}" name="{{ form.rating_1.name }}" value="{{ choice.0 }}" {% if choice.0 == form.rating_1.value %}checked{% endif %}>
+        <label for="id_rating_1_{{ forloop.counter0 }}">{{ choice.1 }}</label>
+        {% endfor %}
+    </div>
+    <br>
+    <br>
+    <label for="id_rating_2">2 - As intervenções selecionadas parecem ser <strong>apropriadas</strong>:</label>
+    <div class="radio-group" style="margin-left: 50px">
+        {% for choice in form.rating_2.field.choices %}
+        <input type="radio" id="id_rating_2_{{ forloop.counter0 }}" name="{{ form.rating_2.name }}" value="{{ choice.0 }}" {% if choice.0 == form.rating_2.value %}checked{% endif %}>
+        <label for="id_rating_2_{{ forloop.counter0 }}">{{ choice.1 }}</label>
+        {% endfor %}
+    </div>
+    <br>
+    <br>
+    <label for="id_rating_3">3 - As intervenções selecionadas parecem ser <strong>aplicáveis</strong>:</label>
+    <div class="radio-group" style="margin-left: 50px">
+        {% for choice in form.rating_3.field.choices %}
+        <input type="radio" id="id_rating_3_{{ forloop.counter0 }}" name="{{ form.rating_3.name }}" value="{{ choice.0 }}" {% if choice.0 == form.rating_3.value %}checked{% endif %}>
+        <label for="id_rating_3_{{ forloop.counter0 }}">{{ choice.1 }}</label>
+        {% endfor %}
+    </div>
+    <br>
+    <br>
+    <label for="id_rating_4">4 - As intervenções selecionadas parecem ser <strong>uma boa opção</strong>:</label>
+    <div class="radio-group" style="margin-left: 50px">
+        {% for choice in form.rating_4.field.choices %}
+        <input type="radio" id="id_rating_4_{{ forloop.counter0 }}" name="{{ form.rating_4.name }}" value="{{ choice.0 }}" {% if choice.0 == form.rating_4.value %}checked{% endif %}>
+        <label for="id_rating_4_{{ forloop.counter0 }}">{{ choice.1 }}</label>
+        {% endfor %}
+    </div>
+    <br>
+    <input type="submit" class="button rounded-square" style="width: 200px; margin-left: 560px; margin-top: 10px" value="Guardar avaliação">
+</form>
+
+<!-- End Content -->
+</body>
+</html>

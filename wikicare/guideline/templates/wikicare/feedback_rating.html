@@ -1,0 +1,102 @@
+<!-- feedback_rating.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WikiCare Patients</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <style>
+        body {
+            background-color: #F6F6F2;
+        }
+        .w3-bar {
+            background-color: #388087;
+        }
+        .w3-bar-item {
+            color: white;
+        }
+        .page {
+            padding-left: 50px;
+            padding-top: 200px;
+            color: #388087
+            
+        }
+        p {
+            width: 50%;
+            background-color: #E2E2E2;
+            padding: 5px;
+            box-sizing: border-box;
+            border: 1px solid black;
+            text-align: left;
+            margin: 0;
+        }
+        .button {
+           text-align: center;
+           display: flex;
+           flex-wrap: wrap;
+           justify-content: center;
+           align-items: center;
+           height: 80px;
+           width: 120px;
+           background-color: #6FB3B8;
+           color: black;
+           border: none;
+           border-radius: 15px;
+           margin: 60px;
+       }
+        
+    </style>
+</head>
+<body>
+
+<!-- Start Content -->
+
+<!-- Navigation (Stays on Top) -->
+<div id= "navigation" class="w3-top w3-bar w3-left" >
+    <a href="{% url 'index' %}" class="w3-bar-item w3-button"> Home</a>
+    <a href="{% url 'index_patient' %}" class="w3-bar-item w3-button">Página Pacientes</a>
+    <a href="{% url 'sys_guide' %}" class="w3-bar-item w3-button">Guideline para gestão de sintomas</a>
+</div>
+
+<!-- About -->
+<div id="page" class="w3-container w3-padding-32 page" style="margin-top: 50px;">
+    <h1 class="w3-left" style="font-size: 35px;">Paciente</h1>
+</div>
+
+<h1>Ratings Overview</h1>
+
+{% if confirm_save %}
+    {% for instance in msas_instance_list %}
+        <!-- Display rating details -->
+        <h2>Symptom: {{ instance.symptom }}</h2>
+        <p>Validation: {{ instance.validation }}</p>
+        <p>Frequency: {{ instance.frequency }}</p>
+        <p>Severity: {{ instance.severity }}</p>
+        <p>Discomfort: {{ instance.disconfort }}</p>
+        <p>Occurrence: {{ instance.occurrence}}
+        
+        <!-- Add an edit button for each rating -->
+        <form method="post" action="{% url 'edit_rating' symptom_id=instance.symptom %}">
+            {% csrf_token %}
+            <button type="submit">Edit</button>
+        </form>
+    {% endfor %}
+    
+    <form method="post" action="{% url 'save_feedback_success' %}">
+        {% csrf_token %}
+        <button type="submit">Confirm and Save</button>
+    </form>
+{% endif %}
+
+
+
+
+
+
+<!-- End Content -->
+</body>
+</html>
+

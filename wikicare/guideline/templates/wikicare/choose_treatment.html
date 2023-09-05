@@ -1,0 +1,390 @@
+<!-- choose_treatment.html-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WikiCare Patients</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <style>
+        body {
+            background-color: #F6F6F2;
+        }
+        .w3-bar {
+            background-color: #388087;
+        }
+        .w3-bar-item {
+            color: white;
+        }
+        .page {
+            padding-left: 270px;
+            padding-top: 50px; /* Adjust the padding value as desired */
+            color: #388087;
+        }
+        p {
+            width: 50%;
+            background-color: #E2E2E2;
+            padding: 5px;
+            box-sizing: border-box;
+            border: 1px solid black;
+            text-align: left;
+            margin: 0;
+        }
+        .button {
+           text-align: center;
+           display: flex;
+           flex-wrap: wrap;
+           justify-content: center;
+           align-items: center;
+           width: 180px;
+           height: 80px;
+           background-color: #6FB3B8;
+           color: white;
+           border: none;
+           border-radius: 15px;
+           text-decoration: none;
+           margin: 60px;
+           font-size: 16px; /* Adjust this value to set the font size */
+       }
+       .button-container {
+          display: flex;
+          gap: 350px; /* Adjust this value for spacing between buttons */
+        }
+       /* Add styles for highlighting */
+       table {
+            border-collapse: collapse;
+            width: 100%;
+            overflow-x: auto; /* Enable horizontal scrolling */
+       }
+       th, td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid black;
+       }
+          
+       tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+         }
+          
+       /* Add styles for first row */
+        thead tr {
+          background-color: #6FB3B8;
+        }
+        
+        /* Add styles for first column */
+        tbody td:first-child {
+          background-color: #BADFE7;
+        }
+        .round-button {
+          border-radius: 50%;
+          background-color: #ccc;
+          padding: 6px;
+          width: 30px;
+          height: 30px;
+          text-align: center;
+          font-size: 12px;
+          line-height: 1;
+        }
+        .black-text {
+            color: black;
+        }
+        .table-caption {
+            caption-side: top;
+            text-align: center; 
+            font-weight: bold;
+            font-size: 18px;
+            padding: 10px;
+        }
+        
+        /* Allow the table to adjust its width based on content */
+        table {
+            table-layout: auto;
+            width: auto; /* Set 'width' to 'auto' to enable dynamic resizing */
+            max-width: 100%; /* Set 'max-width' to '100%' to avoid overflowing the container */
+            margin: 0 auto; /* Center the table on the screen */
+        }
+        #content {
+            text-align: center;
+            padding: 20px;
+            background-color: #F6F6F2; /* Change this to the desired background color */
+            box-shadow: none; /* Remove the shadow */
+        }
+        .message {
+            text-align: center;
+        }
+        
+            
+    </style>
+</head>
+<body>
+{% load custom_filters %}
+
+<!-- Start Content -->
+<!-- Navigation (Stays on Top) -->
+<div id= "navigation" class="w3-top w3-bar w3-left" >
+    <a href="{% url 'index' %}" class="w3-bar-item w3-button"> Home</a>
+    <a href="{% url 'index_patient' %}" class="w3-bar-item w3-button">Página Pacientes</a>
+    <a href="{% url 'sys_guide' %}" class="w3-bar-item w3-button">Guideline para gestão de sintomas</a>
+</div>
+
+<!-- About -->
+<div id="page" class="w3-container w3-padding-32 page" style="margin-top: 30px;">
+    <h1 class="w3-left" style="font-size: x-large;">Área Pessoal: <span class="black-text">{{patient.name}}</span></h1>
+</div>
+
+<div class="w3-container w3-padding-32 page" style="margin-top: -40px;" >
+    <h3 class="w3-left" style="font-size: x-large; background-color: transparent; margin-right: 270px; color: black;">Intervenções recomendadas para gestão de sintomas</h3>
+    <br>
+    <br>
+    <br>
+    <div style="margin-right: 270px; color: black;">
+        Tendo em conta os sintomas relatados, aqui seguem intervenções que podem ser usadas para fazer a gestão dos mesmos sintomas.
+        Pode selecionar todas as que achar adequadas à situação específica do paciente.
+    </div>
+</div>
+
+
+
+<div class="table-responsive">
+    <form method="POST" action="{% url 'save_selected_treatments' %}">
+        {% csrf_token %}
+        
+     
+        <br>
+        {% if bol_psico %}
+        <table class="table table-bordered table-striped table-sm" style="table-layout: auto; width: auto; max-width: 100%; margin: 0 auto;">
+            <caption class="table-caption">Intervenções psicológicas</caption>
+            <thead>
+                <tr>
+                    {% for cell in table_psico.0 %}
+                        <th>{{ cell }} </th>
+                        
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                {% for row in table_psico %}
+                    {% if forloop.counter != 1 %}
+                        <tr>
+                            {% for cell in row %}
+                                <td>{{ cell }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                <td>Selecione a intervenção:</td>
+                    {% for cell in table_psico.0 %}
+                        {% if forloop.counter != 1 %}
+                            <td><input type="checkbox" name="symptoms" value="{{ cell }}" class="round-button"></td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </tfoot>
+        </table> 
+        {% else %}
+        <div class="page" style="margin-top: -30px;" >
+            <h3 style="text-align: center; font-size: 20px; background-color: transparent; margin-right: 270px; color: black;"><strong>Intervenções psicológicas</strong></h3>
+               
+            <div style="text-align: center; margin-right: 270px; color: black;">
+                Não existem Intervençoes psicológicas para os sintomas demonstrados.
+            </div>
+        </div>
+        {% endif %}
+        <br>
+        {% if bol_fisi %}
+        <table class="table table-bordered table-striped table-sm" style="table-layout: auto; width: auto; max-width: 100%; margin: 0 auto;">
+            <caption class="table-caption">Intervenções físicas</caption>
+                <thead>
+                    <tr>
+                        {% for cell in table_fisi.0 %}
+                            <th>{{ cell }} </th>
+                            
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    {% for row in table_fisi %}
+                        {% if forloop.counter != 1 %}
+                            <tr>
+                                {% for cell in row %}
+                                    <td>{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                    <td>Selecione a intervenção:</td>
+                        {% for cell in table_fisi.0 %}
+                            {% if forloop.counter != 1 %}
+                                <td><input type="checkbox" name="symptoms" value="{{ cell }}" class="round-button"></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                </tfoot>
+        </table> 
+        {% else %}
+        <div class="page" style="margin-top: -30px;" >
+            <h3 style="text-align: center; font-size: 20px; background-color: transparent; margin-right: 270px; color: black;"><strong>Intervenções físicas</strong></h3>
+               
+            <div style="text-align: center; margin-right: 270px; color: black;">
+                Não existem Intervençoes físicas para os sintomas demonstrados.
+            </div>
+        </div>
+        {% endif %}
+        
+        
+        <br>
+        {% if bol_nutri %}
+        <table class="table table-bordered table-striped table-sm" style="table-layout: auto; width: auto; max-width: 100%; margin: 0 auto;">
+            <caption class="table-caption">Suplementos nutricionais</caption>
+                <thead>
+                    <tr>
+                        {% for cell in table_nutri.0 %}
+                            <th>{{ cell }} </th>
+                            
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    {% for row in table_nutri %}
+                        {% if forloop.counter != 1 %}
+                            <tr>
+                                {% for cell in row %}
+                                    <td>{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                    <td>Selecione a intervenção:</td>
+                        {% for cell in table_nutri.0 %}
+                            {% if forloop.counter != 1 %}
+                                <td><input type="checkbox" name="symptoms" value="{{ cell }}" class="round-button"></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                </tfoot>
+        </table> 
+        {% else %}
+        <div class="page" style="margin-top: -30px;" >
+            <h3 style="text-align: center; font-size: 20px; background-color: transparent; margin-right: 270px; color: black;"><strong>Suplementos nutricionais</strong></h3>
+               
+            <div style="text-align: center; margin-right: 270px; color: black;">
+                Não existem Suplementos nutricionais para os sintomas demonstrados.
+            </div>
+        </div>
+        {% endif %}
+        <br>
+        {% if bol_farma %}
+        <table class="table table-bordered table-striped table-sm" style="table-layout: auto; width: auto; max-width: 100%; margin: 0 auto;">
+            <caption class="table-caption">Intervenções farmacológicas</caption>
+                <thead>
+                    <tr>
+                        {% for cell in table_farma.0 %}
+                            <th>{{ cell }} </th>
+                            
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    {% for row in table_farma %}
+                        {% if forloop.counter != 1 %}
+                            <tr>
+                                {% for cell in row %}
+                                    <td>{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                    <td>Selecione a intervenção:</td>
+                        {% for cell in table_farma.0 %}
+                            {% if forloop.counter != 1 %}
+                                <td><input type="checkbox" name="symptoms" value="{{ cell }}" class="round-button"></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                </tfoot>
+        </table> 
+        {% else %}
+        <div class="page" style="margin-top: -30px;" >
+            <h3 style="text-align: center; font-size: 20px; background-color: transparent; margin-right: 270px; color: black;"><strong>Intervenções farmacológicas</strong></h3>
+               
+            <div style="text-align: center; margin-right: 270px; color: black;">
+                Não existem Intervençoes farmacológicas para os sintomas demonstrados.
+            </div>
+        </div>
+        {% endif %}
+        <br>
+        {% if bol_comple %}       
+        <table class="table table-bordered table-striped table-sm" style="table-layout: auto; width: auto; max-width: 100%; margin: 0 auto;">
+            <caption class="table-caption">Estratégias complementares</caption>
+            <thead>
+                <tr>
+                    {% for cell in table_comple.0 %}
+                        <th>{{ cell }} </th>
+                        
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                {% for row in table_comple %}
+                    {% if forloop.counter != 1 %}
+                        <tr>
+                            {% for cell in row %}
+                                <td>{{ cell }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                <td>Selecione a intervenção:</td>
+                    {% for cell in table_comple.0 %}
+                        {% if forloop.counter != 1 %}
+                            <td><input type="checkbox" name="symptoms" value="{{ cell }}" class="round-button"></td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </tfoot>
+        </table> 
+        {% else %}
+        <div class="page" style="margin-top: -30px;" >
+            <h3 style="text-align: center; font-size: 20px; background-color: transparent; margin-right: 270px; color: black;"><strong>Estratégias complementares</strong></h3>
+               
+            <div style="text-align: center; margin-right: 270px; color: black;">
+                Não existem Estratégias complementares para os sintomas demonstrados.
+            </div>
+        </div>
+        {% endif %}
+         
+         <!-- Go back button -->
+        <div class="button-container" style="margin-left: 270px">
+          <a href="{% url 'index_patient' %}" class="button">Voltar página de pacientes</a>
+          <button type="submit" class="button">Guardar</button>
+        </div>
+        
+    </form>
+</div>
+
+
+<!-- End Content -->
+</body>
+</html>

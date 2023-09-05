@@ -1,0 +1,123 @@
+<!-- search_patient.html-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WikiCare Patients</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <style>
+        body {
+            background-color: #F6F6F2;
+        }
+        .w3-bar {
+            background-color: #388087;
+        }
+        .w3-bar-item {
+            color: white;
+        }
+        .page {
+            padding-left: 270px;
+            padding-top: 200px;
+            color: #388087
+            
+        }
+        .searchbox {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 30vh; 
+            width: 100%;
+        }
+        .search {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            width: 800px;
+            background-color: #E2E2E2;
+            color: black;
+            border: 1px solid black;
+            border-radius: 15px;
+            margin: 0 auto;
+        }
+        .new_pati {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .new_pati a.button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #6FB3B8;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        p {
+            width: 50%;
+            background-color: #E2E2E2;
+            padding: 5px;
+            box-sizing: border-box;
+            border: 1px solid black;
+            text-align: left;
+            margin: 0;
+        }
+        /* Add separation between patients */
+        .patient-box {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #FFFFFF;
+            border: 1px solid #CCCCCC;
+            border-radius: 5px;
+        }
+        
+    </style>
+</head>
+<body>
+
+<!-- Start Content -->
+
+<!-- Navigation (Stays on Top) -->
+<div id= "navigation" class="w3-top w3-bar w3-left" >
+    <a href="{% url 'index' %}" class="w3-bar-item w3-button"> Home</a>
+    <a href="{% url 'index_patient' %}" class="w3-bar-item w3-button">Página Pacientes</a>
+    <a href="{% url 'sys_guide' %}" class="w3-bar-item w3-button">Guideline para gestão de sintomas</a>
+</div>
+
+<!-- About -->
+<div id="page" class="w3-container w3-padding-32 page" style="margin-top: 50px;">
+    <h1 class="w3-left" style="font-size: 35px;">Página Pacientes</h1>
+</div>
+  
+<!-- Search -->
+<div id="results">
+    {% if patients %}
+        <ul>
+            {% for patient in patients %}
+              <li>
+                <div class="patient-box" style="color: black;">
+                    <p><strong>Nome Completo:</strong> {{ patient.name}}</p>
+                    <p><strong>Número de Utente:</strong> {{ patient.patientID}}</p>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+    {% else %}
+        <p>No patients found.</p>
+    {% endif %}
+</div>
+
+<div class="new_pati">
+    <a href="{%url 'new_patient' %}" class="button">Criar novo paciente</a>
+</div>
+
+<!-- End Content -->
+</body>
+</html>
