@@ -20,7 +20,7 @@ class Patient(models.Model):
 
     # Read diagnosis options from Excel file
     diagnosis_options = []
-    wb = openpyxl.load_workbook('/Users/anagoncalves/Documents/TESE/venv_wiki/wikicare/CID-O.xlsx')
+    wb = openpyxl.load_workbook('CID-O.xlsx')
     sheet = wb.active
     
    
