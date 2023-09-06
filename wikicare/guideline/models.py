@@ -1,11 +1,11 @@
 # import the model
 
-from django.core.validators import MinValueValidator, MaxValueValidator
+
 #De acordo com as seguintes perguntas selecione a opção que melhor se adequa ao paciente.from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
+
 from django.db import models
 import openpyxl
-from django.contrib.auth.models import User
+
 
 #create a new instacy
 

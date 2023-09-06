@@ -1,18 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from datetime import datetime
-from django.contrib.auth.models import User
-from django.core import serializers
-from django.contrib import messages
-from django.shortcuts import render
+
+
 from django.http import HttpResponse
-from django.template import loader
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm
 from .models import Patient, Symptom, MSAS, Occurrence, Treatment, Feedback, Suitability
 from .forms import PatientForm, ValidationForm, MSASForm, RemainingFieldsForm, SuitabilityForm
-from tabulate import tabulate
+
 #from .forms import PatientSearchForm
 # Create your views here.
 
