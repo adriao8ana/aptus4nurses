@@ -7,7 +7,6 @@ Created on Mon Apr 24 16:35:40 2023
 """
 
 from django import forms
-from dal import autocomplete
 from guideline.models import Patient, MSAS, Symptom, Occurrence, Treatment, Suitability
 
 class PatientForm(forms.ModelForm):
